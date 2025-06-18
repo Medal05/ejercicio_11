@@ -13,6 +13,13 @@ Este proyecto consiste en una plataforma web educativa diseñada para que profes
 - **Seguridad:** Autenticación con JWT, encriptación de datos y protección contra vulnerabilidades web.
 - **Diseño:** Principios de accesibilidad y usabilidad para una mejor experiencia del usuario.
 
-## Nuevo Agregado
+## Nuevo Agregado: Módulo de Análisis de Resultados
+Se ha incorporado un módulo de análisis de resultados que permitirá a los profesores visualizar estadísticas detalladas sobre el desempeño de los alumnos. Esta funcionalidad incluirá:
 
-nuevos cambios
+-Gráficas interactivas (barras, pastel, histogramas) para representar:
+-Porcentaje de aciertos por alumno.
+-Promedios generales por cuestionario o grupo.
+-Distribución de respuestas por pregunta (para detectar preguntas confusas).
+-Filtros por materia, grupo o fecha para personalizar los reportes.
+-Exportación de datos en formato CSV o PDF.
+-Identificación de tendencias y áreas de oportunidad tanto a nivel individual como grupal.
