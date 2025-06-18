@@ -12,3 +12,7 @@ Este proyecto consiste en una plataforma web educativa diseñada para que profes
 - **API REST:** Comunicación eficiente y segura entre el frontend y backend.
 - **Seguridad:** Autenticación con JWT, encriptación de datos y protección contra vulnerabilidades web.
 - **Diseño:** Principios de accesibilidad y usabilidad para una mejor experiencia del usuario.
+
+## Nuevo Agregado
+
+nuevos cambios
