@@ -1,0 +1,115 @@
+/* Auth.css (puedes usarlo tanto para Login como para Register) */
+
+/* Fondo degradado y centrado en pantalla */
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(120deg, #1e4477, #16324F);
+  padding: 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Cuadro blanco centrado que contiene todo */
+.auth-container {
+  background: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 420px;
+  text-align: center; /* Centra el título y elementos */
+}
+
+/* Título principal (Login o Registro) */
+.auth-container h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+/* Estilos del formulario */
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+  text-align: left; /* Etiquetas a la izquierda */
+}
+
+/* Etiquetas (Correo, Contraseña, etc.) */
+.auth-container form label {
+  margin-bottom: 0.4rem;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Campos de texto (input) */
+.auth-container form input {
+  width: 100%;
+  padding: 0.65rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+.auth-container form input:focus {
+  border-color: #16324F;
+  outline: none;
+}
+
+/* Botón principal (Entrar / Registrarse) */
+.auth-container form button {
+  width: 100%;
+  padding: 0.65rem;
+  background: #16324F;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.auth-container form button:hover {
+  background: #1e4477;
+}
+
+/* Mensaje de error */
+.error-msg {
+  color: #d9534f;
+  margin: 0.5rem 0;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Sección para enlace a otra página (p.ej. de Login a Registro) */
+.auth-link {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.auth-link p {
+  margin-bottom: 0.4rem;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+/* Botón secundario (Ir a Registro / Volver al Login) */
+.auth-link button {
+  background: transparent;
+  border: 2px solid #16324F;
+  color: #16324F;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+}
+.auth-link button:hover {
+  background: #16324F;
+  color: #fff;
+  border-color: #16324F;
+}

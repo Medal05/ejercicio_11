@@ -1,0 +1,41 @@
+/* LayoutWithNavbar.css */
+
+/* Contenedor principal del layout */
+.layout-container {
+  margin-left: 250px;
+  padding: 1rem;
+}
+
+/* Breadcrumb: puedes ajustar el tamaño de fuente y márgenes si lo deseas */
+.breadcrumb-nav {
+  background-color: #f8f9fa;
+  padding: 8px 16px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  color: #495057;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+}
+
+/* Enlaces del breadcrumb */
+.breadcrumb-nav a {
+  text-decoration: none;
+  color: #007bff;
+  margin-right: 8px;
+  font-weight: 500;
+}
+
+/* Media query para dispositivos pequeños */
+@media screen and (max-width: 768px) {
+  .layout-container {
+    margin-left: 0;
+    padding: 0.5rem;
+  }
+  
+  .breadcrumb-nav {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}

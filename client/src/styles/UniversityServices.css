@@ -1,0 +1,174 @@
+/* ========================= */
+/* Variables y Configuración */
+/* ========================= */
+:root {
+  --primary-color: #16324F;
+  --accent-color: #007bff;
+  --secondary-color: #f9f9f9;
+  --light-gray: #f0f0f0;
+  --dark-gray: #444;
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --transition-duration: 0.3s;
+}
+
+/* ========================= */
+/* Contenedor Principal      */
+/* ========================= */
+.university-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: var(--font-family);
+  color: var(--dark-gray);
+  line-height: 1.6;
+}
+
+/* ========================= */
+/* SECCIÓN HERO (Encabezado) */
+/* ========================= */
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.hero-content h1 {
+  font-size: 2rem;
+  text-transform: uppercase;
+  margin: 0;
+  
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-top: 1rem;
+  border: 3px solid #fff;
+}
+
+@media (min-width: 768px) {
+  .hero-section {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 3rem;
+  }
+  .hero-content {
+    flex: 1;
+    text-align: left;
+    margin-right: 2rem;
+  }
+  .hero-image {
+    flex: 1;
+  }
+}
+
+/* ========================= */
+/* TEXTO A PANTALLA COMPLETA */
+/* ========================= */
+.fullwidth-description {
+  width: 100%;
+  margin: 2rem 0;
+  text-align: justify;   /* Cambia a 'left' o 'center' si lo prefieres */
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.fullwidth-description p {
+  margin: 0; /* Elimina márgenes adicionales */
+}
+
+/* ========================= */
+/* SECCIÓN DE SERVICIOS      */
+/* ========================= */
+.services-section {
+  margin-bottom: 3rem;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.service-item {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: left;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform var(--transition-duration) ease, 
+              box-shadow var(--transition-duration) ease;
+}
+
+.service-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.service-item h3 {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.service-item p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ========================= */
+/* SECCIÓN DE LOGROS         */
+/* ========================= */
+.achievements-section {
+  background: var(--secondary-color);
+  padding: 3rem 2rem;
+  border-radius: 10px;
+  margin-bottom: 3rem;
+}
+
+.achievements-section h2 {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.achievements-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.achievement-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  flex: 1 1 250px;
+  max-width: 300px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform var(--transition-duration) ease;
+  text-align: center;
+}
+
+.achievement-card:hover {
+  transform: scale(1.03);
+}
+
+.achievement-card h3 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.achievement-card p {
+  font-size: 1rem;
+  margin: 0;
+}

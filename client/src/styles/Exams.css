@@ -1,0 +1,210 @@
+/* Estilos generales para Exams.jsx */
+.exams-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.exams-title {
+  text-align: center;
+  color: #34495e;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #ecf0f1;
+  padding-bottom: 0.5rem;
+}
+
+.exams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.exam-card {
+  border: 1px solid rgba(41, 128, 185, 0.2);
+  background: #ffffff;
+  border-radius: 12px;
+  border-left: 6px solid #2980b9;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.exam-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.exam-card-title {
+  font-size: 1.3rem;
+  color: #2c3e50;
+  margin-bottom: 0.8rem;
+}
+
+.exam-card-description {
+  color: #555;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.exam-info {
+  font-size: 0.9rem;
+  color: #777;
+  line-height: 1.5;
+}
+
+.create-exam-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 52px;
+  height: 52px;
+  background-color: #2980b9;
+  color: #fff;
+  border-radius: 50%;
+  border: none;
+  font-size: 2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-exam-button:hover {
+  background-color: #2471a3;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.modal h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #34495e;
+}
+
+.modal form select,
+.modal form input,
+.modal form textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 0.6rem;
+  transition: border 0.2s ease;
+}
+
+.modal form select:focus,
+.modal form input:focus,
+.modal form textarea:focus {
+  border-color: #2980b9;
+  outline: none;
+}
+
+.buttons-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 0.2rem;
+}
+
+.modal button {
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal button[type="submit"] {
+  background-color: #1e88e5;
+}
+
+.modal button[type="submit"]:hover {
+  background-color: #085497;
+}
+
+.modal button[type="button"] {
+  background-color: #1e88e5;
+}
+
+.modal button[type="button"]:hover {
+  background-color: #085497;
+}
+
+.password-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  margin-top: 0.3rem;
+}
+
+.password-form input {
+  padding: 0.3rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 250px;
+}
+
+.password-form button {
+  width: 100%;
+  max-width: 250px;
+  background-color: #1e88e5;
+  padding: 0.3rem;
+  border-radius: 6px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+}
+
+.password-form button.cancel-btn {
+  background-color: #1e88e5;
+}
+
+.password-form button.cancel-btn:hover {
+  background-color: #085497;
+}
+
+.password-form button:hover {
+  background-color: #085497;
+}
+
+.error-msg {
+  color: #f70303;
+  text-align: center;
+  margin-top: 0.3rem;
+  font-weight: bold;
+}

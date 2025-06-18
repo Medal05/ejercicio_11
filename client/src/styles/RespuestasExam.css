@@ -1,0 +1,105 @@
+.respuestas-exam-container {
+  max-width: 1000px;
+  margin: 3rem auto;
+  padding: 3rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #1e293b;
+}
+
+.respuestas-exam-container h2 {
+  text-align: center;
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+  color: #000000; /* Título en negro */
+  font-weight: 700;
+  border-bottom: 1px solid #d0dbec;
+  padding-bottom: 0.5rem;
+}
+
+.pregunta-bloque {
+  background-color: #f5f9ff;
+  border: 0.5px solid #c3d3e8;
+  border-radius: 10px;
+  padding: 1.7rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.pregunta-bloque p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2a3e5c;
+  margin-bottom: 1.2rem;
+}
+
+.opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.opciones label {
+  background: #e7f0fb;
+  border: 0.5px solid #aac5e1;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-size: 1.05rem;
+  color: #1e2f41;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-weight: 500;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.opciones label:hover {
+  background-color: #d5e7f7;
+  border-color: #7aaed4;
+}
+
+textarea {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  border: 0.5px solid #b8cde0;
+  border-radius: 8px;
+  background-color: #fbfcfe;
+  resize: vertical;
+  font-family: inherit;
+  color: #1f2b3e;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+textarea:focus {
+  border-color: #4b88c1;
+  box-shadow: 0 0 0 2px rgba(75, 136, 193, 0.2);
+  outline: none;
+}
+
+button[type="submit"] {
+  display: block;
+  margin: 3rem auto 0;
+  padding: 1rem 3rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.2);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #326dd3;
+  transform: translateY(-2px);
+}
+
+button[type="submit"]:active {
+  transform: translateY(0);
+}

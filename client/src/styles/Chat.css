@@ -1,0 +1,236 @@
+/* ------------------------------------------------------ */
+/* FUENTE Y ESTILOS GLOBALES                              */
+/* ------------------------------------------------------ */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background: #f0f2f5;
+}
+
+/* ------------------------------------------------------ */
+/* CONTENEDOR PRINCIPAL DEL CHAT                          */
+/* ------------------------------------------------------ */
+.chat-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ece9e6, #ffffff);
+}
+
+.chat-container {
+  display: flex;
+  width: 90%;
+  max-width: 1400px;
+  height: 90vh;
+  background-color: #fff;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------ */
+/* SECCIÓN DE USUARIOS (IZQUIERDA)                        */
+/* ------------------------------------------------------ */
+.users-section {
+  width: 25%;
+  background-color: #2e3b4e;  /* Azul grisáceo */
+  color: #fff;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.users-title {
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.users-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-card {
+  padding: 15px;
+  margin-bottom: 10px;
+  background: #3e4e65;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.user-card:hover,
+.user-card.selected {
+  background: #576e8c;
+}
+
+/* ------------------------------------------------------ */
+/* SECCIÓN DEL CHAT (DERECHA)                             */
+/* ------------------------------------------------------ */
+.chat-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #e0e0e0;
+  position: relative;
+}
+
+/* CABECERA DEL CHAT */
+.chat-header {
+  padding: 15px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-header h2 {
+  font-size: 20px;
+  margin: 0;
+  color: #333;
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+}
+
+.message-filter-select, 
+.filter-custom-input {
+  margin-left: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* CONTENEDOR DE MENSAJES */
+.messages-container {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #f7f9fc;
+}
+
+/* MENSAJE INDIVIDUAL */
+.message {
+  max-width: 60%;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 12px; /* Borde más redondeado */
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* MENSAJES ENVIADOS (DERECHA) */
+.user-message {
+  background-color: #e2ffc7; /* Verde claro */
+  margin-left: auto;
+}
+
+/* MENSAJES RECIBIDOS (IZQUIERDA) */
+.other-message {
+  background-color: #ffffff; /* Blanco */
+  border: 1px solid #ddd;
+  margin-right: auto;
+}
+
+/* TEXTO DE QUIÉN ENVÍA */
+.message-sender {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* CONTENIDO DEL MENSAJE */
+.message-content {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+/* FECHA Y HORA DEL MENSAJE */
+.message-timestamp {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #888;
+}
+
+/* BADGE PARA "VISTO" / "NO VISTO" */
+.message-status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(30%, 30%);
+  padding: 6px 10px;
+  border-top-left-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.seen {
+  background-color: #28a745; /* Verde para "Visto" */
+}
+
+.unseen {
+  background-color: #dc3545; /* Rojo para "No visto" */
+}
+
+/* ------------------------------------------------------ */
+/* INPUT PARA ENVIAR MENSAJE (PIE DEL CHAT)               */
+/* ------------------------------------------------------ */
+.chat-input-container {
+  padding: 15px 20px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.message-type-select, 
+.custom-type-input, 
+.chat-input {
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.custom-type-input {
+  width: 180px;
+}
+
+.chat-input {
+  flex: 1;
+}
+
+.chat-send-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.chat-send-button:hover {
+  background-color: #0056b3;
+}
+
+
+
+
+
+

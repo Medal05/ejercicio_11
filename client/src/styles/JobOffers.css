@@ -1,0 +1,245 @@
+/* ===== JobOffers.css ===== */
+
+/* Base Styles */
+.job-offers-page {
+  padding: 2rem;
+  background-color: #f9f9f9;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #333;
+}
+
+.global-search {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.global-search input {
+  width: 100%;
+  max-width: 600px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border 0.3s ease;
+}
+
+.global-search input:focus {
+  border-color: #1A3C6D;
+  outline: none;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Layout Principal: Filtros y Ofertas */
+.content-container {
+  display: flex;
+  gap: 2rem;
+}
+
+/* Panel de Filtros */
+.filters {
+  flex: 0 0 250px;
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.filter-group {
+  margin-bottom: 1.5rem;
+}
+
+.filter-group h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #1A3C6D;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.5rem;
+}
+
+.filter-group .options label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+}
+
+.show-more {
+  display: block;
+  text-align: right;
+  font-size: 0.9rem;
+  color: #1A3C6D;
+  text-decoration: none;
+}
+
+/* Panel de Ofertas */
+.jobs-box {
+  flex: 1;
+}
+
+.jobs-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.job-card {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.job-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.job-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #1A3C6D;
+}
+
+.job-card p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.job-card button {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: #1A3C6D;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.job-card button:hover {
+  background-color: #12233D;
+}
+
+/* Botón flotante para agregar oferta */
+.add-job-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #1A3C6D;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 2.5rem;
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  transition: background 0.3s ease;
+}
+
+.add-job-btn:hover {
+  background-color: #12233D;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 90%;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* ===== Responsividad ===== */
+
+/* Para Tablet y pequeños escritorios (max-width:1024px) */
+@media (max-width: 1024px) {
+  .content-container {
+    gap: 1.5rem;
+  }
+  
+  .filters {
+    flex: 0 0 200px;
+    padding: 1rem;
+  }
+  
+  .jobs-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+/* Para Móviles (max-width:768px) */
+@media (max-width: 768px) {
+  /* Apilar filtros y ofertas verticalmente */
+  .content-container {
+    flex-direction: column;
+  }
+  
+  .filters {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  
+  .jobs-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .global-search input {
+    width: 100%;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  .job-card h2 {
+    font-size: 1.3rem;
+  }
+  
+  .job-card p {
+    font-size: 0.95rem;
+  }
+  
+  .add-job-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+    bottom: 20px;
+    right: 20px;
+  }
+}

@@ -1,0 +1,18 @@
+/* client/src/styles/Calendar.css */
+.calendar-page {
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .calendar-page h1 {
+    margin-bottom: 1rem;
+    color: #16324F;
+  }
+  
+  .calendar-image {
+    max-width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  
