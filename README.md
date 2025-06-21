@@ -23,3 +23,5 @@ Se ha incorporado un módulo de análisis de resultados que permitirá a los pro
 -Filtros por materia, grupo o fecha para personalizar los reportes.
 -Exportación de datos en formato CSV o PDF.
 -Identificación de tendencias y áreas de oportunidad tanto a nivel individual como grupal.
+
+Integrante: Daniel Bretado
