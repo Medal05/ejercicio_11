@@ -6,9 +6,12 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(120deg, #1e4477, #16324F);
+  /* Colores del degradado ajustados para ser más claros */
+  background: linear-gradient(120deg, #3C6EA0, #2C5274);
   padding: 1rem;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  /* El 'margin: 0;' y 'padding: 0;' ya no son necesarios aquí si están en un reset global,
+     pero los dejé si los tenías por alguna razón específica en tu contexto. */
 }
 
 /* Cuadro blanco centrado que contiene todo */
@@ -25,7 +28,7 @@
 /* Título principal (Login o Registro) */
 .auth-container h2 {
   margin-bottom: 1.5rem;
-  color: #333;
+  color: #444;
   font-size: 1.8rem;
   font-weight: 600;
 }
@@ -40,7 +43,7 @@
 /* Etiquetas (Correo, Contraseña, etc.) */
 .auth-container form label {
   margin-bottom: 0.4rem;
-  color: #333;
+  color: #444;
   font-weight: 500;
 }
 
@@ -55,7 +58,7 @@
   transition: border-color 0.2s;
 }
 .auth-container form input:focus {
-  border-color: #16324F;
+  border-color: #2C5274;
   outline: none;
 }
 
@@ -63,7 +66,7 @@
 .auth-container form button {
   width: 100%;
   padding: 0.65rem;
-  background: #16324F;
+  background: #2C5274;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -73,12 +76,12 @@
   transition: background 0.3s;
 }
 .auth-container form button:hover {
-  background: #1e4477;
+  background: #3C6EA0;
 }
 
 /* Mensaje de error */
 .error-msg {
-  color: #d9534f;
+  color: #e67370;
   margin: 0.5rem 0;
   text-align: center;
   font-weight: 500;
@@ -92,15 +95,15 @@
 
 .auth-link p {
   margin-bottom: 0.4rem;
-  color: #333;
+  color: #444;
   font-size: 0.95rem;
 }
 
 /* Botón secundario (Ir a Registro / Volver al Login) */
 .auth-link button {
   background: transparent;
-  border: 2px solid #16324F;
-  color: #16324F;
+  border: 2px solid #2C5274;
+  color: #2C5274;
   padding: 0.5rem 1.2rem;
   border-radius: 6px;
   font-size: 0.95rem;
@@ -109,7 +112,34 @@
   transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
 .auth-link button:hover {
-  background: #16324F;
+  background: #2C5274;
   color: #fff;
-  border-color: #16324F;
+  border-color: #2C5274;
+}
+
+/* 🔹 Centrar reCAPTCHA */
+.recaptcha-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 2.5rem; /* Espacio para el ícono */
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888; /* Gris más claro para el ícono de visibilidad */
 }

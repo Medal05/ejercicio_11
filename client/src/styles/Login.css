@@ -4,10 +4,10 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(120deg, #1e4477, #16324F);
+  background: linear-gradient(120deg, #3C6EA0, #2C5274);
   padding: 1rem;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;  /* Elimina el espacio blanco en la parte superior */
+  margin: 0; /* Elimina el espacio blanco en la parte superior */
   padding: 0;
 }
 
@@ -25,7 +25,7 @@
 /* Título principal (Login o Registro) */
 .auth-container h2 {
   margin-bottom: 1.5rem;
-  color: #333;
+  color: #444;
   font-size: 1.8rem;
   font-weight: 600;
 }
@@ -40,7 +40,7 @@
 /* Etiquetas (Correo, Contraseña, etc.) */
 .auth-container form label {
   margin-bottom: 0.4rem;
-  color: #333;
+  color: #444;
   font-weight: 500;
 }
 
@@ -55,7 +55,7 @@
   transition: border-color 0.2s;
 }
 .auth-container form input:focus {
-  border-color: #16324F;
+  border-color: #2C5274;
   outline: none;
 }
 
@@ -63,7 +63,7 @@
 .auth-container form button {
   width: 100%;
   padding: 0.65rem;
-  background: #16324F;
+  background: #2C5274;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -73,12 +73,12 @@
   transition: background 0.3s;
 }
 .auth-container form button:hover {
-  background: #1e4477;
+  background: #3C6EA0;
 }
 
 /* Mensaje de error */
 .error-msg {
-  color: #d9534f;
+  color: #e67370;
   margin: 0.5rem 0;
   text-align: center;
   font-weight: 500;
@@ -92,15 +92,15 @@
 
 .auth-link p {
   margin-bottom: 0.4rem;
-  color: #333;
+  color: #444;
   font-size: 0.95rem;
 }
 
 /* Botón secundario (Ir a Registro / Volver al Login) */
 .auth-link button {
   background: transparent;
-  border: 2px solid #16324F;
-  color: #16324F;
+  border: 2px solid #2C5274;
+  color: #2C5274;
   padding: 0.5rem 1.2rem;
   border-radius: 6px;
   font-size: 0.95rem;
@@ -109,9 +109,9 @@
   transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
 .auth-link button:hover {
-  background: #16324F;
+  background: #2C5274;
   color: #fff;
-  border-color: #16324F;
+  border-color: #2C5274;
 }
 
 /* 🔹 Centrar reCAPTCHA */
@@ -134,9 +134,9 @@
 
 .toggle-password {
   position: absolute;
-  top: 50%; 
+  top: 50%;
   right: 0.5rem;
   transform: translateY(-50%);
   cursor: pointer;
-  color: #666;
+  color: #888;
 }
