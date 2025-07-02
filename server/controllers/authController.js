@@ -54,35 +54,51 @@ exports.register = async (req, res) => {
   }
 };
 
-// Iniciar sesión
 exports.login = async (req, res) => {
   const { email, password } = req.body;
+  
   try {
-    const userResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    if (userResult.rows.length === 0) {
-      return res.status(400).json({ message: 'Credenciales inválidas' });
-    }
-    const user = userResult.rows[0];
-    if (user.active) {
-      return res.status(403).json({ message: 'El usuario ya tiene una sesión iniciada. Cierre sesión antes de volver a ingresar.' });
-    }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Credenciales inválidas' });
-    }
-    const token = jwt.sign(
-      { id: user.id, email: user.email, nombre: user.nombre },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+    // 1. Buscar usuario y verificar credenciales en una sola operación
+    const { rows: [user] } = await pool.query(
+      `SELECT id, nombre, email, password, active 
+       FROM users WHERE email = $1`, 
+      [email]
     );
-    await pool.query('UPDATE users SET active = true, last_active = NOW() WHERE id = $1', [user.id]);
-    return res.json({ token, user: { id: user.id, nombre: user.nombre, email: user.email } });
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(400).json({ message: 'Credenciales inválidas' });
+    }
+
+    if (user.active) {
+      return res.status(403).json({ 
+        message: 'Usuario ya tiene sesión activa. Cierre sesión primero.' 
+      });
+    }
+
+    // 2. Generar token y actualizar estado en paralelo
+    const [token] = await Promise.all([
+      jwt.sign(
+        { id: user.id, email: user.email, nombre: user.nombre },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+      ),
+      pool.query(
+        'UPDATE users SET active = true, last_active = NOW() WHERE id = $1',
+        [user.id]
+      )
+    ]);
+
+    // 3. Respuesta simplificada
+    return res.json({ 
+      token, 
+      user: { id: user.id, nombre: user.nombre, email: user.email } 
+    });
+
   } catch (error) {
-    console.error("Error en el login: ", error);
-    return res.status(500).json({ message: 'Error en el login' });
+    console.error("Error en el login:", error);
+    return res.status(500).json({ message: 'Error en el servidor' });
   }
 };
-
 // Cerrar sesión
 exports.logout = async (req, res) => {
   const { userId } = req.body;
