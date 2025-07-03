@@ -1,23 +1,28 @@
 // client/src/components/Chat.jsx
-import React, { useState, useEffect } from 'react';
-import '../styles/Chat.css'; // Asegúrate de importar el nuevo archivo de estilos
+import React, { useState, useEffect, useRef } from 'react';
+import '../styles/Chat.css';
 import ListaUsuarios from './ListaUsuarios';
 
 function Chat() {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  // Para enviar mensajes: opción predefinida o "personalizado"
   const [messageTypeOption, setMessageTypeOption] = useState('normal');
   const [customMessageType, setCustomMessageType] = useState('');
-  // Para filtrar mensajes: se selecciona la categoría (por defecto 'all' muestra todos)
   const [filterType, setFilterType] = useState('all');
-  // Para el filtro de mensajes personalizados
   const [filterCustomText, setFilterCustomText] = useState('');
-  
+  const lastMessagesLength = useRef(0);
+
   const userData = localStorage.getItem('user');
   const user = userData ? JSON.parse(userData) : null;
   const sender_id = user ? user.id : null;
+
+  // Solicita permiso de notificaciones al cargar
+  useEffect(() => {
+    if (window.Notification && Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
+  }, []);
 
   // Polling: actualiza los mensajes cada 3 segundos
   useEffect(() => {
@@ -32,6 +37,34 @@ function Chat() {
     const intervalId = setInterval(fetchMessages, 3000);
     return () => clearInterval(intervalId);
   }, []);
+
+  // Notificación de mensaje nuevo
+  useEffect(() => {
+    if (!sender_id) return;
+    if (lastMessagesLength.current === 0) {
+      lastMessagesLength.current = messages.length;
+      return;
+    }
+    const unseenMessages = messages.filter(
+      (msg) =>
+        msg.recipient_id === sender_id &&
+        !msg.seen &&
+        msg.sender_id !== sender_id // Excluye los mensajes propios
+    );
+    if (unseenMessages.length > 0) {
+      unseenMessages.forEach((msg) => {
+        if (!selectedUser || msg.sender_id !== selectedUser.id) {
+          if (window.Notification && Notification.permission === "granted") {
+            new Notification("Nuevo mensaje de " + (msg.sender_name || "usuario"), {
+              body: msg.content,
+              icon: "/favicon.ico"
+            });
+          }
+        }
+      });
+    }
+    lastMessagesLength.current = messages.length;
+  }, [messages, selectedUser, sender_id]);
 
   // Marcar mensajes no leídos como vistos
   useEffect(() => {
@@ -82,31 +115,25 @@ function Chat() {
     }
   };
 
-  // --- MEJORA: Función para filtrar mensajes ---
+  // --- Función para filtrar mensajes ---
   const filterMessages = (allMessages, selectedUser, sender_id, filterType, filterCustomText) => {
     if (!selectedUser) return [];
     return allMessages.filter((msg) => {
-      // Solo mensajes entre los dos usuarios
       const isBetweenUsers =
         (msg.sender_id === sender_id && msg.recipient_id === selectedUser.id) ||
         (msg.sender_id === selectedUser.id && msg.recipient_id === sender_id);
       if (!isBetweenUsers) return false;
-
-      // Filtro por tipo estándar
       if (filterType === 'all') return true;
       if (filterType === 'personalizado') {
-        // Si hay texto personalizado, filtra por coincidencia parcial en el tipo o contenido
         if (filterCustomText.trim() !== '') {
           return (
             msg.tipo.toLowerCase().includes(filterCustomText.trim().toLowerCase()) ||
             msg.content.toLowerCase().includes(filterCustomText.trim().toLowerCase())
           );
         }
-        // Si no hay texto, muestra los tipos que no sean los predefinidos
         const tiposPredefinidos = ["normal", "urgente", "personal", "clase"];
         return !tiposPredefinidos.includes(msg.tipo.toLowerCase());
       }
-      // Búsqueda parcial en tipo estándar
       return msg.tipo.toLowerCase().includes(filterType.toLowerCase());
     });
   };
@@ -162,7 +189,6 @@ function Chat() {
                     <strong>{msg.sender_name}</strong> - <em>{msg.tipo}</em>
                   </p>
                   <p className="message-content">{msg.content}</p>
-                  {/* Badge "Visto" / "No visto" */}
                   <div className={`message-status ${msg.seen ? 'seen' : 'unseen'}`}>
                     {msg.seen ? 'Visto' : 'No visto'}
                   </div>
