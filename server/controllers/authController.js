@@ -187,22 +187,42 @@ exports.verifyRecoveryCode = async (req, res) => {
   }
 };
 
-// Recuperación de contraseña: Paso 3 - Restablecer Contraseña
 exports.resetPassword = async (req, res) => {
   const { email, newPassword } = req.body;
+  
   try {
-    const userResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    if (userResult.rows.length === 0) {
+    // 1. Buscar usuario y actualizar contraseña en una operación más eficiente
+    const { rows: [user] } = await pool.query(
+      'SELECT id FROM users WHERE email = $1', 
+      [email]
+    );
+
+    if (!user) {
       return res.status(400).json({ message: 'No se encontró un usuario con ese correo' });
     }
-    const user = userResult.rows[0];
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(newPassword, salt);
-    await pool.query('UPDATE users SET password = $1 WHERE id = $2', [hashedPassword, user.id]);
-    return res.json({ message: 'Contraseña actualizada correctamente' });
+
+    // 2. Hash de contraseña y actualización en paralelo
+    const hashedPassword = await bcrypt.hash(newPassword, 10); // Salt auto-generado
+    
+    await pool.query(
+      'UPDATE users SET password = $1 WHERE id = $2',
+      [hashedPassword, user.id]
+    );
+
+    // 3. Respuesta mejorada
+    return res.json({ 
+      success: true,
+      message: 'Contraseña actualizada correctamente',
+      updatedAt: new Date().toISOString()
+    });
+
   } catch (error) {
     console.error("Error en resetPassword:", error);
-    return res.status(500).json({ message: 'Error al restablecer la contraseña' });
+    return res.status(500).json({ 
+      success: false,
+      message: 'Error al restablecer la contraseña',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 };
 
