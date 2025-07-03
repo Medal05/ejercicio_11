@@ -2,7 +2,7 @@
 const pool = require('../config/db');
 
 // Crear una nueva pregunta
-exports.createPregunta = async (req, res) => {
+exports.createPregunta = async (req, res, next) => {
   try {
     const {
       examen_id,
@@ -24,13 +24,12 @@ exports.createPregunta = async (req, res) => {
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    console.error('Error al crear pregunta:', error);
-    res.status(500).json({ message: 'Error al crear pregunta', error: error.message });
+    next(error);
   }
 };
 
 // Obtener todas las preguntas de un examen específico
-exports.getPreguntasPorExamen = async (req, res) => {
+exports.getPreguntasPorExamen = async (req, res, next) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
@@ -39,14 +38,12 @@ exports.getPreguntasPorExamen = async (req, res) => {
     );
     res.json(result.rows);
   } catch (error) {
-    console.error('Error al obtener preguntas:', error);
-    res.status(500).json({ message: 'Error al obtener preguntas', error: error.message });
+    next(error);
   }
 };
 
-
 // Obtener banco de preguntas de la misma clase y administrador
-exports.getBancoPreguntas = async (req, res) => {
+exports.getBancoPreguntas = async (req, res, next) => {
   const { class_id, admin_id } = req.params;
   try {
     const result = await pool.query(
@@ -64,10 +61,6 @@ exports.getBancoPreguntas = async (req, res) => {
     );
     res.json(result.rows);
   } catch (error) {
-    console.error('Error al obtener banco de preguntas:', error);
-    res.status(500).json({
-      message: 'Error al obtener banco de preguntas',
-      error: error.message
-    });
+    next(error);
   }
 };

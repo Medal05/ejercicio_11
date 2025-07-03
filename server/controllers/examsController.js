@@ -2,7 +2,7 @@
 const pool = require('../config/db');
 
 // Crear examen
-exports.createExam = async (req, res) => {
+exports.createExam = async (req, res, next) => {
   try {
     const { nombre, descripcion, contrasena, creador_id, class_id } = req.body;
 
@@ -26,13 +26,12 @@ exports.createExam = async (req, res) => {
 
     res.status(201).json({ message: 'Examen creado', exam: examRes.rows[0] });
   } catch (error) {
-    console.error('Error al crear examen:', error);
-    res.status(500).json({ message: 'Error al crear examen', error: error.message });
+    next(error);
   }
 };
 
 // Obtener todos los exámenes con detalles de la clase y el creador
-exports.getExams = async (req, res) => {
+exports.getExams = async (req, res, next) => {
   try {
     const query = `
       SELECT e.id AS exam_id, e.nombre AS exam_nombre, e.descripcion AS exam_descripcion, 
@@ -46,13 +45,12 @@ exports.getExams = async (req, res) => {
     const { rows } = await pool.query(query);
     res.json(rows);
   } catch (error) {
-    console.error('Error obteniendo exámenes:', error);
-    res.status(500).json({ message: 'Error obteniendo los exámenes', error: error.message });
+    next(error);
   }
 };
 
 // Obtener un examen por ID (incluye la contraseña)
-exports.getExamById = async (req, res) => {
+exports.getExamById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const result = await pool.query('SELECT * FROM exams WHERE id = $1', [id]);
@@ -63,13 +61,12 @@ exports.getExamById = async (req, res) => {
 
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Error obteniendo el examen por ID:', error);
-    res.status(500).json({ message: 'Error al obtener examen', error: error.message });
+    next(error);
   }
 };
 
 // Verificar la contraseña del examen (solo alumnos la necesitan)
-exports.verifyExamPassword = async (req, res) => {
+exports.verifyExamPassword = async (req, res, next) => {
   try {
     const { examen_id, contrasena, user_id } = req.body;
 
@@ -110,7 +107,6 @@ exports.verifyExamPassword = async (req, res) => {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
   } catch (error) {
-    console.error('Error al verificar contraseña del examen:', error);
-    res.status(500).json({ message: 'Error al verificar contraseña', error: error.message });
+    next(error);
   }
 };
