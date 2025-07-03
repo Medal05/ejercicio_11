@@ -4,6 +4,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const pool = require('./config/db'); // Importar la conexión a la BD
 require('dotenv').config();
+const helmet = require('helmet');
 
 const jobsRoutes = require('./routes/jobsRoutes');
 const mensajeRoutes = require('./routes/mensajeRoutes');
@@ -29,6 +30,7 @@ const io = new Server(server, {
 
 app.use(cors());
 app.use(express.json());
+app.use(helmet());
 
 // Servir archivos estáticos desde la carpeta "uploads"
 app.use('/uploads', express.static('uploads'));
@@ -45,7 +47,7 @@ app.use('/api/preguntas', preguntasRoutes);
 app.use('/api/examen-preguntas', examenPreguntasRoutes);
 app.use('/api/respuestas-estudiante', respuestasEstudianteRoutes);
 
-// Agrega el middleware de errores al final
+// Middleware de manejo de errores al final
 app.use(errorHandler);
 
 // WebSockets: Manejo de conexiones de usuarios
