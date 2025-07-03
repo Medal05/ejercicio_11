@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../styles/Chat.css';
 import ListaUsuarios from './ListaUsuarios';
+import appLogo from '../assets/Logo.jpeg'; // Cambia la ruta si usas otro logo
 
 function Chat() {
   const [message, setMessage] = useState('');
@@ -38,7 +39,20 @@ function Chat() {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Notificación de mensaje nuevo
+  // --- Notificación profesional ---
+  function showNotification({ sender_name, content, tipo }) {
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+    const notificationTitle = `Nuevo mensaje de ${sender_name || "Usuario"}${tipo ? ` (${tipo})` : ""}`;
+    const notificationOptions = {
+      body: content.length > 120 ? content.slice(0, 120) + "..." : content,
+      icon: appLogo,
+      badge: appLogo
+    };
+    const notif = new Notification(notificationTitle, notificationOptions);
+    setTimeout(() => notif.close(), 5000);
+  }
+
+  // Notificación de mensaje nuevo profesional y no duplicada
   useEffect(() => {
     if (!sender_id) return;
     if (lastMessagesLength.current === 0) {
@@ -49,20 +63,22 @@ function Chat() {
       (msg) =>
         msg.recipient_id === sender_id &&
         !msg.seen &&
-        msg.sender_id !== sender_id // Excluye los mensajes propios
+        msg.sender_id !== sender_id
     );
-    if (unseenMessages.length > 0) {
-      unseenMessages.forEach((msg) => {
-        if (!selectedUser || msg.sender_id !== selectedUser.id) {
-          if (window.Notification && Notification.permission === "granted") {
-            new Notification("Nuevo mensaje de " + (msg.sender_name || "usuario"), {
-              body: msg.content,
-              icon: "/favicon.ico"
-            });
-          }
-        }
-      });
-    }
+    // Último mensaje no visto por remitente
+    const latestUnseenBySender = {};
+    unseenMessages.forEach(msg => {
+      latestUnseenBySender[msg.sender_id] = msg;
+    });
+    Object.values(latestUnseenBySender).forEach(msg => {
+      if (!selectedUser || msg.sender_id !== selectedUser.id) {
+        showNotification({
+          sender_name: msg.sender_name,
+          content: msg.content,
+          tipo: msg.tipo
+        });
+      }
+    });
     lastMessagesLength.current = messages.length;
   }, [messages, selectedUser, sender_id]);
 
