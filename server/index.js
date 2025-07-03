@@ -16,6 +16,7 @@ const examsRoutes = require('./routes/examsRoutes');
 const preguntasRoutes = require('./routes/preguntasRoutes');
 const examenPreguntasRoutes = require('./routes/examenPreguntasRoutes');
 const respuestasEstudianteRoutes = require('./routes/respuestasEstudianteRoutes');
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 const server = http.createServer(app);
@@ -43,6 +44,9 @@ app.use('/api/exams', examsRoutes);
 app.use('/api/preguntas', preguntasRoutes);
 app.use('/api/examen-preguntas', examenPreguntasRoutes);
 app.use('/api/respuestas-estudiante', respuestasEstudianteRoutes);
+
+// Agrega el middleware de errores al final
+app.use(errorHandler);
 
 // WebSockets: Manejo de conexiones de usuarios
 io.on('connection', async (socket) => {

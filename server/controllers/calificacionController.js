@@ -1,7 +1,7 @@
 // server/controllers/calificacionController.js
 const pool = require('../config/db');
 
-exports.createCalificacion = async (req, res) => {
+exports.createCalificacion = async (req, res, next) => {
   try {
     const { tarea_id, usuario_id } = req.body;
     if (!req.file) {
@@ -16,12 +16,11 @@ exports.createCalificacion = async (req, res) => {
     const { rows } = await pool.query(query, [tarea_id, usuario_id, archivoPath]);
     res.status(201).json(rows[0]);
   } catch (error) {
-    console.error("Error creando calificacion:", error);
-    res.status(500).json({ message: "Error creando calificacion", error: error.message });
+    next(error);
   }
 };
 
-exports.getCalificacionByTaskAndUser = async (req, res) => {
+exports.getCalificacionByTaskAndUser = async (req, res, next) => {
   try {
     const { tarea_id, usuario_id } = req.params;
     const query = `SELECT * FROM calificacion WHERE tarea_id = $1 AND usuario_id = $2`;
@@ -31,12 +30,11 @@ exports.getCalificacionByTaskAndUser = async (req, res) => {
     }
     res.json(rows[0]);
   } catch (error) {
-    console.error("Error obteniendo calificacion:", error);
-    res.status(500).json({ message: "Error obteniendo calificacion", error: error.message });
+    next(error);
   }
 };
 
-exports.updateCalificacion = async (req, res) => {
+exports.updateCalificacion = async (req, res, next) => {
   try {
     const { id } = req.params; // id de la fila en la tabla calificacion
     const { calificacion } = req.body;
@@ -50,12 +48,11 @@ exports.updateCalificacion = async (req, res) => {
     }
     res.json(rows[0]);
   } catch (error) {
-    console.error("Error actualizando calificacion:", error);
-    res.status(500).json({ message: "Error actualizando calificacion", error: error.message });
+    next(error);
   }
 };
 
-exports.getCalificacionesPorTarea = async (req, res) => {
+exports.getCalificacionesPorTarea = async (req, res, next) => {
   try {
     // Convertir tareaId a entero
     const tareaId = parseInt(req.params.tareaId, 10);
@@ -74,7 +71,6 @@ exports.getCalificacionesPorTarea = async (req, res) => {
     const { rows } = await pool.query(query, [tareaId]);
     res.json(rows);
   } catch (error) {
-    console.error("Error obteniendo calificaciones por tarea:", error);
-    res.status(500).json({ message: "Error obteniendo calificaciones por tarea", error: error.message });
+    next(error);
   }
 };
