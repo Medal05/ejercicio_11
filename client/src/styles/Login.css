@@ -76,12 +76,29 @@
   background: #1e4477;
 }
 
-/* Mensaje de error */
+.success-msg {
+  color: green;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
 .error-msg {
-  color: #d9534f;
-  margin: 0.5rem 0;
-  text-align: center;
-  font-weight: 500;
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.input-error-msg {
+  color: red;
+  font-size: 0.85em;
+  margin-top: 5px;
+  display: block; /* Para que ocupe su propia línea */
+}
+
+.timer-msg {
+  font-size: 0.9em;
+  color: #555;
+  margin-top: 10px;
 }
 
 /* Sección para enlace a otra página (p.ej. de Login a Registro) */
