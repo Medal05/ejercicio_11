@@ -6,43 +6,36 @@ exports.asignarPreguntasAExamen = async (req, res) => {
   try {
     const { examen_id, preguntas } = req.body;
 
-    // Validación de datos recibidos
     if (!examen_id || !Array.isArray(preguntas) || preguntas.length === 0) {
       return res.status(400).json({
         message: 'Datos inválidos: asegúrate de enviar examen_id y un arreglo con preguntas.'
       });
     }
 
-    console.log(`Asignando ${preguntas.length} preguntas al examen ${examen_id}`);
+    // Obtener todas las preguntas ya asignadas en una sola consulta
+    const { rows: asignadas } = await pool.query(
+      'SELECT pregunta_id FROM examen_preguntas WHERE examen_id = $1 AND pregunta_id = ANY($2::int[])',
+      [examen_id, preguntas]
+    );
+    const asignadasSet = new Set(asignadas.map(row => row.pregunta_id));
 
-    for (const preguntaId of preguntas) {
-      if (!preguntaId) {
-        console.warn(`Pregunta inválida:`, preguntaId);
-        continue;
-      }
+    // Filtrar solo las preguntas que no están asignadas
+    const nuevasPreguntas = preguntas.filter(pid => pid && !asignadasSet.has(pid));
 
-      // Verificar si ya está asignada
-      const yaExiste = await pool.query(
-        'SELECT id FROM examen_preguntas WHERE examen_id = $1 AND pregunta_id = $2',
-        [examen_id, preguntaId]
-      );
-
-      if (yaExiste.rows.length === 0) {
-        try {
-          await pool.query(
-            'INSERT INTO examen_preguntas (examen_id, pregunta_id) VALUES ($1, $2)',
-            [examen_id, preguntaId]
-          );
-          console.log(`✅ Asignada pregunta ${preguntaId} al examen ${examen_id}`);
-        } catch (insertError) {
-          console.error(`❌ Error insertando pregunta ${preguntaId}:`, insertError.message);
-        }
-      } else {
-        console.log(`⚠️ Pregunta ${preguntaId} ya estaba asignada`);
-      }
+    if (nuevasPreguntas.length === 0) {
+      return res.status(200).json({ message: 'Todas las preguntas ya estaban asignadas.' });
     }
 
-    return res.status(201).json({ message: '✅ Preguntas asignadas correctamente.' });
+    // Construir valores para el INSERT múltiple
+    const values = nuevasPreguntas.map((pid, i) => `($1, $${i + 2})`).join(', ');
+    const params = [examen_id, ...nuevasPreguntas];
+
+    await pool.query(
+      `INSERT INTO examen_preguntas (examen_id, pregunta_id) VALUES ${values}`,
+      params
+    );
+
+    return res.status(201).json({ message: `✅ ${nuevasPreguntas.length} preguntas asignadas correctamente.` });
   } catch (error) {
     console.error('❌ Error asignando preguntas al examen:', error);
     return res.status(500).json({
