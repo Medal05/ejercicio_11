@@ -34,6 +34,9 @@ function Login() {
 
   const [recoveryMessage, setRecoveryMessage] = useState('');
 
+  // Nuevo estado para manejar la carga en todas las solicitudes
+  const [isLoading, setIsLoading] = useState(false);
+
   // Lista de dominios permitidos (validación básica)
   const allowedDomains = ['gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com'];
   const isEmailValid = (correo) => {
@@ -67,6 +70,8 @@ function Login() {
       setLoginMessage("Por favor, completa el captcha.");
       return;
     }
+
+    setIsLoading(true); // <--- Inicia carga
     try {
       const res = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
@@ -84,6 +89,10 @@ function Login() {
     } catch (error) {
       console.error(error);
       setLoginMessage("Ocurrió un error al iniciar sesión.");
+    } finally {
+      setIsLoading(false); // <--- Finaliza carga
+      recaptchaRef.current && recaptchaRef.current.reset(); // Considera resetear el captcha en cada intento
+      setCaptchaValue(null);
     }
   };
 
@@ -94,14 +103,13 @@ function Login() {
   // Paso 1: Solicitar código
   const handleRequestCode = async (e) => {
     e.preventDefault();
-    // Verificamos que el correo ingresado sea válido
     if (!isEmailValid(recoveryEmail)) {
       setRecoveryMessage("El correo no es válido o el dominio no está permitido.");
       return;
     }
+
+    setIsLoading(true); // <--- Inicia carga
     try {
-      // Enviamos la solicitud al endpoint, pasando el correo que el usuario quiere recuperar
-      // Esto hará que el back‑end genere y envíe el código a recoveryEmail
       const res = await fetch('http://localhost:5000/api/auth/recover', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -109,7 +117,6 @@ function Login() {
       });
       const data = await res.json();
       if (res.ok) {
-        // Si todo va bien, pasamos al siguiente paso
         setRecoveryMessage(data.message);
         setRecoveryStep(2);
       } else {
@@ -118,14 +125,17 @@ function Login() {
     } catch (error) {
       console.error(error);
       setRecoveryMessage("Error al solicitar el código.");
+    } finally {
+      setIsLoading(false); // <--- Finaliza carga
     }
   };
 
   // Paso 2: Verificar código
   const handleVerifyCode = async (e) => {
     e.preventDefault();
+
+    setIsLoading(true); // <--- Inicia carga
     try {
-      // Verificamos el código que el usuario ingresó
       const res = await fetch('http://localhost:5000/api/auth/verifyRecoveryCode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -141,19 +151,27 @@ function Login() {
     } catch (error) {
       console.error(error);
       setRecoveryMessage("Error al verificar el código.");
+    } finally {
+      setIsLoading(false); // <--- Finaliza carga
     }
   };
 
   // Paso 3: Restablecer contraseña
   const handleResetPassword = async (e) => {
     e.preventDefault();
-    // Validamos que las contraseñas coincidan
     if (newPassword !== confirmPassword) {
       setRecoveryMessage("Las contraseñas no coinciden.");
       return;
     }
+    // Opcional: Añadir validación de complejidad de contraseña aquí
+    // if (newPassword.length < 8 || !/[A-Z]/.test(newPassword) || ...) {
+    //   setRecoveryMessage("La contraseña debe tener al menos 8 caracteres, una mayúscula, un número, etc.");
+    //   return;
+    // }
+
+
+    setIsLoading(true); // <--- Inicia carga
     try {
-      // Enviamos la nueva contraseña y el correo que estamos recuperando
       const res = await fetch('http://localhost:5000/api/auth/resetPassword', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -171,6 +189,7 @@ function Login() {
           setNewPassword('');
           setConfirmPassword('');
           setRecoveryMessage('');
+          setLoginMessage('Contraseña restablecida con éxito. ¡Ahora puedes iniciar sesión!'); // Mensaje de éxito en login
         }, 2000);
       } else {
         setRecoveryMessage(data.message);
@@ -178,6 +197,8 @@ function Login() {
     } catch (error) {
       console.error(error);
       setRecoveryMessage("Error al restablecer la contraseña.");
+    } finally {
+      setIsLoading(false); // <--- Finaliza carga
     }
   };
 
@@ -187,7 +208,7 @@ function Login() {
         {isRecovery ? (
           <>
             <h2>Recuperar Contraseña</h2>
-            {recoveryMessage && <p className="error-msg">{recoveryMessage}</p>}
+            {recoveryMessage && <p className="message-box">{recoveryMessage}</p>} {/* Clase más genérica para mensajes */}
             {recoveryStep === 1 && (
               <form onSubmit={handleRequestCode}>
                 <label>
@@ -197,9 +218,13 @@ function Login() {
                     value={recoveryEmail}
                     onChange={(e) => setRecoveryEmail(e.target.value)}
                     required
+                    disabled={isLoading} // Deshabilitar input durante carga
+
                   />
                 </label>
-                <button type="submit">Solicitar Código</button>
+                <button type="submit" disabled={isLoading}> {/* Deshabilitar botón durante carga */}
+                  {isLoading ? 'Solicitando...' : 'Solicitar Código'}
+                </button>
               </form>
             )}
             {recoveryStep === 2 && (
@@ -211,9 +236,12 @@ function Login() {
                     value={recoveryCode}
                     onChange={(e) => setRecoveryCode(e.target.value)}
                     required
+                    disabled={isLoading}
                   />
                 </label>
-                <button type="submit">Verificar Código</button>
+                <button type="submit" disabled={isLoading}>
+                  {isLoading ? 'Verificando...' : 'Verificar Código'}
+                </button>
               </form>
             )}
             {recoveryStep === 3 && (
@@ -226,6 +254,7 @@ function Login() {
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       required
+                      disabled={isLoading}
                     />
                     <span
                       className="toggle-password"
@@ -243,6 +272,7 @@ function Login() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       required
+                      disabled={isLoading}
                     />
                     <span
                       className="toggle-password"
@@ -252,7 +282,9 @@ function Login() {
                     </span>
                   </div>
                 </label>
-                <button type="submit">Restablecer Contraseña</button>
+                <button type="submit" disabled={isLoading}>
+                  {isLoading ? 'Restableciendo...' : 'Restablecer Contraseña'}
+                </button>
               </form>
             )}
             <div className="auth-link">
@@ -262,7 +294,9 @@ function Login() {
                   setIsRecovery(false);
                   setRecoveryStep(1);
                   setRecoveryMessage('');
+                  setRecoveryEmail(''); // Limpiar el email de recuperación al volver al login
                 }}
+                disabled={isLoading} // Deshabilitar si hay una operación en curso
               >
                 Volver al Login
               </button>
@@ -279,6 +313,7 @@ function Login() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  disabled={isLoading}
                 />
               </label>
               <label>
@@ -289,6 +324,7 @@ function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    disabled={isLoading}
                   />
                   <span
                     className="toggle-password"
@@ -305,28 +341,33 @@ function Login() {
                   onChange={handleCaptchaChange}
                   onErrored={handleCaptchaErrored}
                   onExpired={handleCaptchaExpired}
+                  // No se deshabilita directamente el componente, pero sus funciones de callback
+                  // no actualizarán el estado si isLoading es true para evitar side effects no deseados.
                 />
               </div>
-              <button type="submit">Entrar</button>
+              <button type="submit" disabled={isLoading}>
+                {isLoading ? 'Entrando...' : 'Entrar'}
+              </button>
             </form>
-            {loginMessage && <p className="error-msg">{loginMessage}</p>}
+            {loginMessage && <p className="message-box">{loginMessage}</p>} {/* Clase más genérica para mensajes */}
             <div className="auth-link">
               <p>¿Olvidaste tu contraseña?</p>
               <button
                 type="button"
                 onClick={() => {
                   setIsRecovery(true);
-                  // Prellenar correo de recuperación si ya se ingresó en login
-                  setRecoveryEmail(email);
+                  setRecoveryEmail(email); // Prellenar correo de recuperación si ya se ingresó en login
                   setRecoveryStep(1);
+                  setLoginMessage(''); // Limpiar mensaje de login al ir a recuperación
                 }}
+                disabled={isLoading}
               >
                 Recuperar Contraseña
               </button>
             </div>
             <div className="auth-link">
               <p>¿No tienes una cuenta?</p>
-              <button type="button" onClick={() => navigate('/register')}>
+              <button type="button" onClick={() => navigate('/register')} disabled={isLoading}>
                 Registrarse
               </button>
             </div>
