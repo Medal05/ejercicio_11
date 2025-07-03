@@ -15,8 +15,6 @@ function Chat() {
   // Para el filtro de mensajes personalizados
   const [filterCustomText, setFilterCustomText] = useState('');
   
-  
-
   const userData = localStorage.getItem('user');
   const user = userData ? JSON.parse(userData) : null;
   const sender_id = user ? user.id : null;
@@ -84,24 +82,36 @@ function Chat() {
     }
   };
 
-  // Filtrado de mensajes:
-  const filteredMessages = selectedUser
-    ? messages.filter((msg) => {
-        const isChatMessage =
-          (msg.sender_id === sender_id && msg.recipient_id === selectedUser.id) ||
-          (msg.sender_id === selectedUser.id && msg.recipient_id === sender_id);
-        if (!isChatMessage) return false;
-        if (filterType === 'all') return true;
-        if (filterType === 'personalizado') {
-          if (filterCustomText.trim() !== '') {
-            return msg.tipo.toLowerCase().includes(filterCustomText.trim().toLowerCase());
-          } else {
-            return !["normal", "urgente", "personal", "Clase"].includes(msg.tipo.toLowerCase());
-          }
+  // --- MEJORA: Función para filtrar mensajes ---
+  const filterMessages = (allMessages, selectedUser, sender_id, filterType, filterCustomText) => {
+    if (!selectedUser) return [];
+    return allMessages.filter((msg) => {
+      // Solo mensajes entre los dos usuarios
+      const isBetweenUsers =
+        (msg.sender_id === sender_id && msg.recipient_id === selectedUser.id) ||
+        (msg.sender_id === selectedUser.id && msg.recipient_id === sender_id);
+      if (!isBetweenUsers) return false;
+
+      // Filtro por tipo estándar
+      if (filterType === 'all') return true;
+      if (filterType === 'personalizado') {
+        // Si hay texto personalizado, filtra por coincidencia parcial en el tipo o contenido
+        if (filterCustomText.trim() !== '') {
+          return (
+            msg.tipo.toLowerCase().includes(filterCustomText.trim().toLowerCase()) ||
+            msg.content.toLowerCase().includes(filterCustomText.trim().toLowerCase())
+          );
         }
-        return msg.tipo.toLowerCase() === filterType.toLowerCase();
-      })
-    : [];
+        // Si no hay texto, muestra los tipos que no sean los predefinidos
+        const tiposPredefinidos = ["normal", "urgente", "personal", "clase"];
+        return !tiposPredefinidos.includes(msg.tipo.toLowerCase());
+      }
+      // Búsqueda parcial en tipo estándar
+      return msg.tipo.toLowerCase().includes(filterType.toLowerCase());
+    });
+  };
+
+  const filteredMessages = filterMessages(messages, selectedUser, sender_id, filterType, filterCustomText);
 
   return (
     <div className="chat-page">
@@ -134,7 +144,7 @@ function Chat() {
                     type="text"
                     value={filterCustomText}
                     onChange={(e) => setFilterCustomText(e.target.value)}
-                    placeholder="Buscar etiqueta personalizada"
+                    placeholder="Buscar etiqueta o mensaje"
                     className="filter-custom-input"
                   />
                 )}
